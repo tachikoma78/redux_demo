@@ -8,15 +8,15 @@ import LibraryList from "./src/components/LibraryList";
 
 export default class App extends Component<{}> {
   render() {
-    return (  
+    return (
      <Provider store={createStore(reducers)}>
         <View>
           <Header headerText="Redux react-native" />
           <LibraryList />
         </View>
       </Provider>
-    
-    );
+  
+    );  
   }
 }
 

@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
+import { ListView } from 'react-native';
 import { connect } from 'react-redux';
+import ListItem from './ListItem';
 
 class LibraryList extends Component {
-    render() {
-        return;
+    componentWillMount(){
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
+        this.dataSource = ds.cloneWithRows(this.props.libraries); 
     }
+
+    renderRow(library) {
+        return <ListItem libraryItem={library} />;
+    }
+  
+    render() {
+      return (
+          <ListView 
+            dataSource={this.dataSource}
+            renderRow={this.renderRow}
+          />
+    );}
 }
 
-// map the global "state" object inside the redux store
-// and provides it as prop
 const mapStateToProps = state => {
-    return { dataToShow : state.libraries };
+    return { libraries : state.libraries };
 };
+
 
 export default connect(mapStateToProps)(LibraryList);
