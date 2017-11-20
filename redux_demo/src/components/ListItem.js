@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
-import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Text, 
+    TouchableWithoutFeedback, 
+    View,
+    LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { CardSection } from './common';
 import * as actions from '../actions';
 
 class ListItem extends Component {
-    
+    componentWillUpdate(){
+        LayoutAnimation.spring();
+    }
+
     renderDescription() {
         const { descriptionStyle } = styles;
-        const { libraryItem, selectedLibraryId } = this.props;
-        if(libraryItem.id === selectedLibraryId){
-            console.log(libraryItem.id +" "+ selectedLibraryId);
+        const { libraryItem, expanded } = this.props;
+        if(expanded){
             return (
                 <CardSection>
                     <Text style={descriptionStyle}>{libraryItem.description}</Text>
@@ -46,15 +51,14 @@ const styles = {
         paddingLeft: 15
     },
     descriptionStyle:{
-        paddingLeft: 15
+        paddingLeft: 15,
+        flex: 1
     }
 };
 
-// connect to the app state we want
-const mapStateToProps = state => {
-    return {
-        selectedLibraryId: state.selectedLibraryId
-    };
+const mapStateToProps = (state, ownProps) => {
+    const expanded = state.selectedLibraryId === ownProps.libraryItem.id;
+    return { expanded }; // expanded : expanded key values identical
 };
 
 export default connect(mapStateToProps, actions)(ListItem);
